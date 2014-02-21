@@ -7,18 +7,16 @@ Tile = Backbone.Model.extend({
 		id: 'null',
 		threatenedByBlack: 'null',
 		threatenedByWhite: 'null',
-		pieceImage: 'null'
+		imageID: 'null',
+		image: 'null',
+		FEN_Char: 'null',
+		fileAndRank: "null"
     },
-    initialize: function() {
-        //
-    }
 });
    
 var Chessboard = Backbone.Collection.extend({
 	model: Tile
 });
-
-//====create chessboard====
 
 var chessboard = new Chessboard;
 var rankCounter = 10, fileCounter, fileLetter;
@@ -27,7 +25,7 @@ for (x = 0; x < 120; x++) {
 	var tile = new Tile; 
 	tile.set({id: x});
 	
-	fileCounter = (x%10);
+	fileCounter = (x % 10);
 		
 	if ((x > 20) && (x < 101)) { 
 		if ((fileCounter != 0) && (fileCounter != 9)) {
@@ -46,7 +44,7 @@ for (x = 0; x < 120; x++) {
 	
 	chessboard.push(tile);
 }
-//=========================
+
 function drawChessboard() {
 	var chessboardBorder = new createjs.Shape();
 	var tileImage = new createjs.Shape();

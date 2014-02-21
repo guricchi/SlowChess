@@ -9,8 +9,6 @@ var gameInit = true;
 
 var ApplicationSetting = Backbone.Model.extend({
     defaults: {
-        framerate: 60,
-
         manifest: [
             {src:"img/chess-sprites.png", id:"chessSprites"}
         ]
@@ -35,25 +33,23 @@ function loadResources() {
 function init() {
 	if (gameInit) {	
 		gameInit = false;
-		console.log("Game initialized.");
-		gameInit = false;
 		loadResources();
 		drawChessboard();
 		drawPieces();
 		drawButtons();
 		scanButtons();
+		FenSpace.drawFEN();
 		stage.update();
 	}
 }
 
 function updateScreen(event) { 
 	if (update) {
-		console.log("Game screen updated.");
 		update = false;
 		stage.update();
 	}
 	if (gameInit) {
-		setTimeout(init,1000);
+		setTimeout(init, 1000);
 	}
 }
 	

@@ -1,11 +1,50 @@
 var FenSpace = {};
 
-var FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+var startingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+var FEN = startingPosition;
 
 var activeColor, castlePermissions, enpassant, 
 	halfMoveClock, fullMoveNumber;
 	
 var board64 = [64];
+
+FenSpace.drawFEN = function () {
+	document.getElementById('FEN').innerHTML = FEN;
+}
+
+FenSpace.generateFEN = function () {
+	var fileCounter =  1, rankCounter = 8, nullCounter = 0, currentTile= "null";
+	FEN = "";
+	
+	for (x = 21; x < 99; x++) {
+		currentTile = chessboard.get(x).get("FEN_Char");
+		if (currentTile != "null") {
+			if (nullCounter != 0) {
+				FEN += nullCounter;
+				nullCounter = 0;
+			}
+			FEN += currentTile;
+		}
+		if (currentTile == "null") {
+			nullCounter++;
+		}
+		fileCounter++;
+			
+		if (fileCounter > 8) {
+			x += 2;
+			if (nullCounter != 0) {
+				FEN += nullCounter;
+				nullCounter = 0;
+			}
+			rankCounter--;
+			fileCounter = 1;
+			
+			if (rankCounter != 0) {
+				FEN += "/";
+			}
+		}
+	}
+}
 
 FenSpace.parseFEN = function() {
 	var FEN_Array = FEN.split(" ", 6);
@@ -117,21 +156,18 @@ FenSpace.populateBoard = function() {
 
 	for (x = 0; x < 64; x++) {
 		switch (board64[x]) {
-			case "P": 
-				chessboard.get(boardCurser).set({currentPiece: "pawn", color: "white"}); 
-				chessboard.get(boardCurser).set({pieceImage: whitePawn});
-			break;
-			case "N": chessboard.get(boardCurser).set({currentPiece: "knight", color: "white"}); break;
-			case "B": chessboard.get(boardCurser).set({currentPiece: "bishop", color: "white"}); break;
-			case "R": chessboard.get(boardCurser).set({currentPiece: "rook", color: "white"}); break;
-			case "Q": chessboard.get(boardCurser).set({currentPiece: "queen", color: "white"}); break;
-			case "K": chessboard.get(boardCurser).set({currentPiece: "king", color: "white"}); break;
-			case "p": chessboard.get(boardCurser).set({currentPiece: "pawn", color: "black"}); break;
-			case "n": chessboard.get(boardCurser).set({currentPiece: "knight", color: "black"}); break;
-			case "b": chessboard.get(boardCurser).set({currentPiece: "bishop", color: "black"}); break;
-			case "r": chessboard.get(boardCurser).set({currentPiece: "rook", color: "black"}); break;
-			case "q": chessboard.get(boardCurser).set({currentPiece: "queen", color: "black"}); break;
-			case "k": chessboard.get(boardCurser).set({currentPiece: "king", color: "black"}); break;
+			case "P": chessboard.get(boardCurser).set({FEN_Char: "P", currentPiece: "pawn",color: "white"}); break;
+			case "N": chessboard.get(boardCurser).set({FEN_Char: "N", currentPiece: "knight", color: "white"}); break;
+			case "B": chessboard.get(boardCurser).set({FEN_Char: "B", currentPiece: "bishop", color: "white"}); break;
+			case "R": chessboard.get(boardCurser).set({FEN_Char: "R", currentPiece: "rook", color: "white"}); break;
+			case "Q": chessboard.get(boardCurser).set({FEN_Char: "Q", currentPiece: "queen", color: "white"}); break;
+			case "K": chessboard.get(boardCurser).set({FEN_Char: "K", currentPiece: "king", color: "white"}); break;
+			case "p": chessboard.get(boardCurser).set({FEN_Char: "p", currentPiece: "pawn", color: "black"}); break;
+			case "n": chessboard.get(boardCurser).set({FEN_Char: "n", currentPiece: "knight", color: "black"}); break;
+			case "b": chessboard.get(boardCurser).set({FEN_Char: "b", currentPiece: "bishop", color: "black"}); break;
+			case "r": chessboard.get(boardCurser).set({FEN_Char: "r", currentPiece: "rook", color: "black"}); break;
+			case "q": chessboard.get(boardCurser).set({FEN_Char: "q", currentPiece: "queen", color: "black"}); break;
+			case "k": chessboard.get(boardCurser).set({FEN_Char: "k", currentPiece: "king", color: "black"}); break;
 		}
 		
 		boardCurser++;
